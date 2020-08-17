@@ -9,7 +9,6 @@ import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.obj.TheEnum;
 import com.example.demo.obj.TheInterface;
 import com.example.demo.obj.TheRequiredBean;
 
@@ -24,25 +23,21 @@ public class TheInterfaceTypeHandler extends BaseTypeHandler<TheInterface> {
 	@Override
 	public void setNonNullParameter(PreparedStatement ps, int i, TheInterface parameter, JdbcType jdbcType)
 			throws SQLException {
-		theRequiredBean.doSomething();
-		ps.setString(i, TheEnum.TEST.name());
+		ps.setString(i, parameter.name());
 	}
 
 	@Override
 	public TheInterface getNullableResult(ResultSet rs, String columnName) throws SQLException {
-		theRequiredBean.doSomething();
-		return TheEnum.TEST;
+		return theRequiredBean.findByName( rs.getString(columnName) );
 	}
 
 	@Override
 	public TheInterface getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-		theRequiredBean.doSomething();
-		return TheEnum.TEST;
+		return theRequiredBean.findByName( rs.getString(columnIndex) );
 	}
 
 	@Override
 	public TheInterface getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-		theRequiredBean.doSomething();
-		return TheEnum.TEST;
+		return theRequiredBean.findByName( cs.getString(columnIndex) );
 	}
 }
